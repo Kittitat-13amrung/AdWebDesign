@@ -20,7 +20,7 @@
                 </ul>
               </div>
             @endif
-            <form method="POST" action="{{ route('admin.cars.store')  }}">
+            <form method="POST" action="{{ route('admin.cars.store')  }}" enctype="multipart/form-data">
               <input type="hidden" name="_token" value="{{  csrf_token()  }}">
               <div class="form-group">
                 <label for="make">Make</label>
@@ -32,11 +32,15 @@
               </div>
               <div class="form-group">
                 <label for="price">Price</label>
-                <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}" />
+                <input type="number" class="form-control" id="price" name="price" value="{{ old('price') }}" />
               </div>
               <div class="form-group">
                 <label for="engine_size">Engine Size</label>
-                <input type="text" class="form-control" id="engine_size" name="engine_size" value="{{ old('engine_size') }}" />
+                <input type="number" class="form-control" id="engine_size" name="engine_size" step="0.1" value="{{ old('engine_size') }}" />
+              </div>
+              <div class="form-group">
+                <label for="file">Image</label>
+                <input type="file" class="form-control" id="file" name="file"/>
               </div>
 
               <a href="{{ route('admin.cars.index') }}" class="btn btn-outline">Cancel</a>

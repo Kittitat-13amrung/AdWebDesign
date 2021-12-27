@@ -20,7 +20,7 @@
                 </ul>
               </div>
             @endif
-            <form method="POST" action="{{ route('admin.cars.update', $car->id)}}">
+            <form method="POST" action="{{ route('admin.cars.update', $car->id)}}" enctype="multipart/form-data">
               <input type="hidden" name="_token" value="{{  csrf_token()  }}">
               <input type="hidden" name="_method" value="PUT">
 
@@ -39,6 +39,12 @@
               <div class="form-group">
                 <label for="engine_size">Engine Size</label>
                 <input type="number" class="form-control" id="engine_size" step="0.1" name="engine_size" value="{{ old('engine_size', $car->engine_size) }}" />
+              </div>
+
+              <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" class="form-control" id="file" name="file" value="{{ old('file', $image->file) }}" />
+                <img class="w-25" src="/storage/image/{{ $image->file }}" alt="{{ $car->make }} {{ $car->model }}">
               </div>
 
               <a href="{{ route('admin.cars.index') }}" class="btn btn-outline">Cancel</a>

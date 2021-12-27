@@ -15,6 +15,8 @@
             @else
             <table id="table-cars" class="table table-hover">
                 <thead>
+                  <th>ID</th>
+                  <th>Image</th>
                   <th>Make</th>
                   <th>Model</th>
                   <th>Price</th>
@@ -22,7 +24,12 @@
                 </thead>
                 <tbody>
                   @foreach ($cars as $car)
+                    @foreach ($images as $image)
                     <tr data-id="{{ $car->id }}">
+                      <td>{{ $car->id }}</td>
+                      <td>
+                        <img src="../storage/image/{{ $image->file }}" alt="test" width="35px">
+                      </td>
                       <td>{{ $car->make }}</td>
                       <td>{{ $car->model }}</td>
                       <td>{{ $car->price }}</td>
@@ -36,6 +43,7 @@
                           <button type="submit" class="form-cotrol btn btn-danger">Delete</a>
                       </td>
                     </tr>
+                    @endforeach
                   @endforeach
                 </tbody>
               </table>
