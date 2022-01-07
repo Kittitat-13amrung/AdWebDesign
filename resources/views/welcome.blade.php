@@ -14,9 +14,9 @@
                         </div>
                     @endif
 
-                    Welcome to Larafest.
+                    Welcome to Carshow.
 
-                    Read more <a href=""> about us </a>
+                    Let us take you to our <a href=" {{ route('user.cars.index') }}"> showcase </a>
                 </div>
             </div>
         </div>

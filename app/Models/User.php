@@ -42,6 +42,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // a function to check users if they are authorized to perform certain actions 
     public function authorizeRoles($roles) {
         if (is_array($roles)) {
             return $this->hasAnyRole($roles) ||
@@ -50,15 +51,18 @@ class User extends Authenticatable
         return $this->hasRole($roles) ||
         abort(401, 'This action is unauthorized');
         }
-        
+    
         public function hasRole($role) {
             return null !== $this->roles()->where('name', $role)->first();
         }
         
+        // 
         public function hasAnyRole($roles) {
             return null !== $this->roles()->whereIn('name', $roles)->first();
         }
 
+        // make a many to many relationship between roles and users table
+        // to the foreign table of user_roles 
     public function roles() {
         return $this->belongsToMany('App\Models\Role', 'user_roles');
     }

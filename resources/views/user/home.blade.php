@@ -15,6 +15,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    <a href="{{ route('user.cars.index') }}">View Cars</a>
                 </div>
             </div>
         </div>

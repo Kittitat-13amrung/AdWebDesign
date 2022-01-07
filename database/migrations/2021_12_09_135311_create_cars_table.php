@@ -13,19 +13,15 @@ class CreateCarsTable extends Migration
      */
     public function up()
     {
+        // input following attributes in the table
         Schema::create('cars', function (Blueprint $table) {
-            $table->dropForeign(['image_id']);
-
             $table->id();
             $table->string('make', '64');
             $table->string('model', '100');
-            $table->mediumInteger('price');
+            $table->float('price');
             $table->float('engine_size');
-            // $table->foreign('image_id')->references('id')->on('images')->onUpdate('cascade')->onDelete('restrict');
-            $table->bigInteger('image_id')->unsigned()->nullable()->default(null);
+            $table->string('image_location');
             $table->timestamps();
-
-            $table->foreign('image_id')->references('id')->on('images')->onUpdate('restrict')->onDelete('cascade');
         });
     }
 

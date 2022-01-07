@@ -6,8 +6,14 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            Cars
-            <a href="{{ route('admin.cars.create') }}" class="btn btn-primary float-right">Add</a>
+             <div class="row">
+               <div class="col-md-11">
+                 Cars 
+               </div>
+               <div class="col-md-1">
+                 <a href="{{ route('admin.cars.create') }}" class="btn btn-primary justify-content-end">Add</a>
+               </div>
+             </div>
           </div>
           <div class="card-body">
             @if (count($cars)=== 0)
@@ -24,11 +30,10 @@
                 </thead>
                 <tbody>
                   @foreach ($cars as $car)
-                    @foreach ($images as $image)
                     <tr data-id="{{ $car->id }}">
                       <td>{{ $car->id }}</td>
                       <td>
-                        <img src="../storage/image/{{ $image->file }}" alt="test" width="35px">
+                        <img src="../storage/image/{{ $car->image_location }}" alt="test" width="50px">
                       </td>
                       <td>{{ $car->make }}</td>
                       <td>{{ $car->model }}</td>
@@ -42,8 +47,6 @@
                           <input type="hidden" name="_token"  value="{{ csrf_token() }}">
                           <button type="submit" class="form-cotrol btn btn-danger">Delete</a>
                       </td>
-                    </tr>
-                    @endforeach
                   @endforeach
                 </tbody>
               </table>

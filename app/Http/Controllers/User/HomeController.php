@@ -12,6 +12,9 @@ class HomeController extends Controller
      *
      * @return void
      */
+
+    // use auth to secure session and ensuring 
+    // that users are routed to their respective role's index page 
     public function __construct()
     {
         $this->middleware('auth');

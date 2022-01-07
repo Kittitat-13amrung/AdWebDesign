@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
         $role_admin->description = 'An Administrator user';
         $role_admin->save();
 
+        // seeding data of user role into the roles table
         $role_user = new Role();
         $role_user->name = 'user';
         $role_user->description = 'An Ordinary user';

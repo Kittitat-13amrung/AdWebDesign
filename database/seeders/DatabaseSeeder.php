@@ -13,8 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // Preload all the data in the following seeders
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(CarSeeder::class);
     }
 }

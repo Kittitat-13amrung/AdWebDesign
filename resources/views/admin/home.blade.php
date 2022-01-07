@@ -15,6 +15,8 @@
                     @endif
 
                     You are logged in as an Admin user!
+
+                    <a href="{{ route('admin.cars.index') }}">View Cars</a>
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@
                     @else
                         <table id="table-cars" class="table table-hover">
                             <thead>
+                                <th>Preview</th>
                                 <th>Make</th>
                                 <th>Model</th>
                                 <th>Price</th>
@@ -20,8 +21,12 @@
                                 <th></th>
                             </thead>
                             <tbody>
+                                <!-- for each car in the database print out the following -->
                                 @foreach ($cars as $car)
                                 <tr data-id="{{ $car->id }}">
+                                    <td>
+                                        <img src="../storage/image/{{ $car->image_location }}" alt="{{ $car->make . '' . $car->model}}" width="50px">
+                                    </td>
                                     <td>{{ $car->make }}</td>
                                     <td>{{ $car->model }}</td>
                                     <td>{{ $car->price }}</td>

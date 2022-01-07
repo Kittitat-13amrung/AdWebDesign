@@ -5,25 +5,46 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Car;
-use App\Models\Image;
+use Auth;
 
 class CarController extends Controller
 {
+    // use auth to secure session and ensuring 
+    // that users are routed to their respective role's index page 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
+        // authentication
+        $user = Auth::user();
+        $car = 'home'; // declaring a local variable
+
+        // check if user is an admin
+        if($user->hasRole('admin')) {
+            $car = 'admin.cars.index'; //if so route to admin page
+        }
+
+        // if user is an ordinary user
+        else if ($user->hasRole('user')) {
+            $car = 'user.cars.index'; //route to user page
+        }
+
         //get all from the Car Table
         $cars = Car::all();
-        $images = Image::all();
-        return view('admin.cars.index', [
-            //put $cars into 'car' then
-            // the view will see the cars (the green one below)
-            'cars' => $cars,
-            'images' => $images
+        return view($car, [
+            //the data receive from Car::all will
+            // be assigned to 'cars'
+            'cars' => $cars
         ]);
     }
 
@@ -34,6 +55,7 @@ class CarController extends Controller
      */
     public function create()
     {
+        // re-route admin to the create page
         return view('admin.cars.create');
     }
 
@@ -46,41 +68,33 @@ class CarController extends Controller
     public function store(Request $request)
     {
         // when user clicks submit on the create view above
-        // the festival will be stored in the DB
+        // the car will be stored in the database
+
+        // data validation
         $request->validate([
             'make' => 'required|min:3',
             'model' =>'required|min:3',
             'price' => 'required',
             'engine_size' => 'required',
-            'file' => 'required'
+            'file' => 'required|mimes:jpeg,jpg,bmp,png'
         ]);
 
-        if ($request->hasFile('file')) {
-            $request->validate([
-                'image' => 'mimes:jpeg,jpg,bmp,png'
-            ]);
-
-            
+            // store file to the location specified
             $request->file->store('image', 'public');
             
-            $image = new Image([
-                "file" => $request->file->hashName()
-            ]);
-            $image->save(); //save the record
-            // $file_id = $image->id
-        }
+            // create a local variable to assign new image to it
+            $image = $request->file('file')->hashName();
 
-        // $image_id = Image::findOrFail($image_id);
-
-        // if validation passes create the new book
+        // if validation passes create the new car
         $car = new Car();
         $car->make = $request->input('make');
         $car->model = $request->input('model');
         $car->price = $request->input('price');
         $car->engine_size = $request->input('engine_size');
-        $car->image_id = $image->id;
+        $car->image_location = $image;
         $car->save();
 
+        // when done, re-route back to admin's index page
         return redirect()->route('admin.cars.index');
     }
 
@@ -92,12 +106,12 @@ class CarController extends Controller
      */
     public function show($id)
     {
+        // find the id passed through and display it
         $car = Car::findOrFail($id);
-        $image = Image::findOrFail($id);
 
+        // put these findings above and show it on the page
         return view('admin.cars.show', [
             'car' => $car,
-            'image' => $image
         ]);
     }
 
@@ -111,13 +125,11 @@ class CarController extends Controller
     {
         // get the car by ID from the Database
         $car = Car::findOrFail($id);
-        $image = Image::findOrFail($id);
 
-        // Load the edit view and pass the festival to
+        // Load the edit view and pass the car to
         // that view
         return view('admin.cars.edit', [
-            'car' => $car,
-            'image' => $image
+            'car' => $car
         ]);
     }
 
@@ -130,38 +142,38 @@ class CarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // first get the existing festival that the user is update
+        // first get the existing car that the user is update
         $car = Car::findOrFail($id);
-        $image = Image::findOrFail($id);
+
+        // validate those data
         $request->validate([
             'make' => 'required|min:3',
             'model' =>'required|min:3',
             'price' => 'required',
-            'engine_size' => 'required',
-            'file' => 'required'
+            'engine_size' => 'required'
         ]);
 
+        // for any images validate it
+        // store in a location
         if ($request->hasFile('file')) {
             $request->validate([
-                'image' => 'mimes:jpeg,jpg,bmp,png'
+                'file' => 'mimes:jpeg,jpg,bmp,png'
             ]);
 
-            
+            // store the image in the destination folder
             $request->file->store('image', 'public');
-            
-            $image = new Image([
-                "file" => $request->file->hashName()
-            ]);
-            $image->update(); //save the record
-            // $file_id = $image->id
+
+            // update the data of the file name
+            $image = $request->file->hashName();
+
         }
 
-        // if validation passes then update existing festival
+        // if validation passes then update existing car
         $car->make = $request->input('make');
         $car->model = $request->input('model');
         $car->price = $request->input('price');
         $car->engine_size = $request->input('engine_size');
-        $car->image_id = $image->id;
+        $car->image_location = $image;
         $car->save();
 
         return redirect()->route('admin.cars.index');
@@ -175,9 +187,11 @@ class CarController extends Controller
      */
     public function destroy($id)
     {
+        // find the car id
         $car = Car::findOrFail($id);
-        $car->delete();
+        $car->delete(); //and delete it
 
+        // go back to the index page
         return redirect()->route('admin.cars.index');
     }
 }

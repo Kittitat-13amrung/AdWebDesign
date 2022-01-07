@@ -43,9 +43,10 @@
 
               <div class="form-group">
                 <label for="image">Image</label>
-                <input type="file" class="form-control" id="file" name="file" value="{{ old('file', $image->file) }}" />
-                <img class="w-25" src="/storage/image/{{ $image->file }}" alt="{{ $car->make }} {{ $car->model }}">
+                <input type="file" class="form-control" id="file" name="file"/>
               </div>
+              
+              <br>
 
               <a href="{{ route('admin.cars.index') }}" class="btn btn-outline">Cancel</a>
               <button type="submit" class="btn btn-primary float-right">Submit</button>

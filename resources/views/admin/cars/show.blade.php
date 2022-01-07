@@ -3,21 +3,25 @@
 @section('content')
 <div class="container">
     <div class="row">
+    <div class="col-md-2"></div>
         <div class="col-md-8 col-md-offset-2">
             <div class="card">
-                <div class="card-header">Make: {{ $car->make }}</div>
+                <div class="card-header"><br></div>
 
                 <div class="card-body">
                         <table id="table-cars" class="table table-hover">
                             <div class="row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-10">
-                                    <img class="w-75 justify-content-center" src="/storage/image/{{ $image->file }}" alt="{{ $car->make}} {{ $car->model }}">
+                                    <img class="w-75 justify-content-center" src="/storage/image/{{ $car->image_location }}" alt="{{ $car->make . " " . $car->model }}">
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
                             <tbody>
                                 <br>
+                                <td>Make</td>
+                                    <td>{{ $car->make }}</td>
+                                </tr>
                                 <tr>
                                     <td>Model</td>
                                     <td>{{ $car->model }}</td>
